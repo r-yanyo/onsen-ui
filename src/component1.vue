@@ -43,7 +43,7 @@
           fontSize: '30px',
           color: '#fff',
           position: 'absolute',
-          bottom: '40px',
+          bottom: '20px',
           left: 0,
           right: 0
         }
