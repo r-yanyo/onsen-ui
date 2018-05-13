@@ -26,18 +26,42 @@
             </div>
           </div>
       </div>
+      <div id="tabs">
+        <a @click='toggle = true' v-bind:class='{selected:toggle}' href='#' class="tab" >投稿</a>
+        <a @click='toggle = false' v-bind:class='{selected:!toggle}' href='#' class="tab" >保存済み</a>
+      </div>
       <div id="post-wrapper">
-          <ul id='my-post' class='posts'>
-            <li v-for="i in 10">
-              <a href='#' class='post'>
-                <img src='/public/img/ball.jpg' class="post-image">
-              </a>
-            </li>
-          </ul>
+        <myPosts v-if='toggle' myPosts></myPosts>
+        <favoritePosts v-if='!toggle' favoritePosts></favoritePosts>
       </div>
     </div>
   </v-ons-page>
 </template>
+
+<script>
+  import myPosts from './myPosts'
+  import favoritePosts from './favoritePosts'
+
+  export default {
+    data() {
+      return {
+        toggle: true,
+        tabIndex: 0,
+        tabs: [
+        {
+          label: '投稿',
+          page: myPosts,
+        },
+        {
+          label: '保存済み',
+          page: favoritePosts,
+        }
+        ]
+      }
+    },
+    components: { myPosts, favoritePosts }
+  }
+</script>
 
 <style scoped>
   .content-wrapper{
@@ -100,24 +124,18 @@
     background-color: #fafafa;
     border-top: 1px solid gray;
   }
-  .posts{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    align-items: flex-start;
+  #tabs{
+    border-top: 1px solid #dbdbdb;
+    height: 50px;
+    align-items: center;
   }
-  .posts li{
-    width: 33%;
-    margin-right: auto;
-    margin-bottom: auto;
+  .tab{
+    display: inline-block;
+    height: 100%;
+    margin: 0 50px;
+    padding: 10px 0;
   }
-  .post{
-    opacity: 1;
-  }
-  .post:hover{
-    opacity: 0.8;
-  }
-  img.post-image{
-    width: 100%;
+  .tab.selected{
+    border-top: 1px solid black;
   }
 </style>

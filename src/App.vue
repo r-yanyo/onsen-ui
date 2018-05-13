@@ -80,4 +80,8 @@ a {
   color: black;
   text-decoration: none;
 }
+
+.search-input{
+  background-color: white;
+}
 </style>
