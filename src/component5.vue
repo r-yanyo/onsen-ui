@@ -13,11 +13,11 @@
                 <b>30</b>
               </div>
               <div id='follow-n'>
-                <a href='#'>フォロー</a><br>
+                <a href='#' v-on:click="this.openModal" id='follow'>フォロー</a><br>
                 <b>{{following.length}}</b>
               </div>
               <div id='follower-n'>
-                <a href='#'>フォロワー</a><br>
+                <a href='#' v-on:click="this.openModal" id='follower'>フォロワー</a><br>
                 <b>{{followers.length}}</b>
               </div>
             </div>
@@ -35,6 +35,7 @@
         <favoritePosts v-if='!toggle' favoritePosts></favoritePosts>
       </div>
     </div>
+
   </v-ons-page>
 </template>
 
@@ -91,7 +92,7 @@
         })
       },
     },
-    components: { myPosts, favoritePosts }
+    components: { myPosts, favoritePosts}
   }
 </script>
 
@@ -103,11 +104,11 @@
   }
   .mybutton{
     display: block;
-    width: 80%;
+    max-width: 150ZZpx;
     padding: 3px 5px;
     border: 1px solid #dbdbdb;
     border-radius: 5px;
-    margin: 5px;
+    margin: 5px auto;
     font-size: 1.0rem;
     color: black;
     background-color: white;
@@ -124,6 +125,7 @@
     justify-content: space-around;
   }
   #user-info .left{
+    width: 40%;
     height: 100%;
     padding: 5px;
   }
@@ -137,6 +139,7 @@
     font-size: 1.0rem;
   }
   #user-info .right{
+    width: 60%;
     height: 70%;
     margin: auto 0;
   }
@@ -144,9 +147,10 @@
     width: 100%;
     display: flex;
     justify-content: space-around;
+    white-space: nowrap;
   }
-  #user-info .right div{
-    margin: 0 5px;
+  #follow-n, #follower-n{
+    margin: 0;
   }
   #edit-profile{
     width: 100%;
