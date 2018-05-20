@@ -4,7 +4,7 @@
       <div id="user-info">
           <div class="left">
             <img src='/public/img/ball.jpg' id="user-icon">
-            <p id="user-name">r-yanyo</p>
+            <p id="user-name">{{user.name}}</p>
           </div>
           <div class="right">
             <div id="user-numbers">
@@ -14,11 +14,11 @@
               </div>
               <div id='follow-n'>
                 <a href='#'>フォロー</a><br>
-                <b>200</b>
+                <b>{{following.length}}</b>
               </div>
               <div id='follower-n'>
                 <a href='#'>フォロワー</a><br>
-                <b>300</b>
+                <b>{{followers.length}}</b>
               </div>
             </div>
             <div id='edit-profile'>
@@ -39,12 +39,16 @@
 </template>
 
 <script>
+  import axios from 'axios'
   import myPosts from './myPosts'
   import favoritePosts from './favoritePosts'
 
   export default {
     data() {
       return {
+        user: {},
+        following: [],
+        followers: [],
         toggle: true,
         tabIndex: 0,
         tabs: [
@@ -58,6 +62,34 @@
         }
         ]
       }
+    },
+    mounted: function() {
+      this.fetchUser();
+      this.fetchFollowing();
+      this.fetchFollowers();
+    },
+    methods: {
+      fetchUser: function () {
+        axios.get('https://instagourmet.herokuapp.com/api/users/1').then( res => {
+          this.user = res.data;
+        }, error => {
+          console.log(error);
+        })
+      },
+      fetchFollowing: function () {
+        axios.get('https://instagourmet.herokuapp.com/api/users/1/following').then( res => {
+          this.following = res.data;
+        }, error => {
+          console.log(error);
+        })
+      },
+      fetchFollowers: function () {
+        axios.get('https://instagourmet.herokuapp.com/api/users/1/followers').then( res => {
+          this.followers = res.data;
+        }, error => {
+          console.log(error);
+        })
+      },
     },
     components: { myPosts, favoritePosts }
   }

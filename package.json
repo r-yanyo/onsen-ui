@@ -12,6 +12,7 @@
     "start": "http-server ./ -p $PORT"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "http-server": "^0.11.1",
     "vue": "^2.5.11"
   },

@@ -7,7 +7,7 @@
           <v-ons-toolbar-button icon="ion-ios-paperplane, material: md-menu"></v-ons-toolbar-button>
         </div>
       </v-ons-toolbar>
-
+  
       <v-ons-tabbar swipeable position="auto" animation="none" :tabs="tabs" :index.sync="tabIndex">
       </v-ons-tabbar>
 
