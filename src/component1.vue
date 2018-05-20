@@ -40,7 +40,7 @@
         ],
         dots: {
           textAlign: 'center',
-          fontSize: '30px',
+          fontSize: '3.0rem',
           color: '#fff',
           position: 'absolute',
           bottom: '20px',
