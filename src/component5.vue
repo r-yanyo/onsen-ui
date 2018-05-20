@@ -36,6 +36,8 @@
       </div>
     </div>
 
+    <modal v-bind:list="following" ref="modal"></modal>
+    <modal v-bind:list="followers" ref="modal"></modal>
   </v-ons-page>
 </template>
 
@@ -43,6 +45,7 @@
   import axios from 'axios'
   import myPosts from './myPosts'
   import favoritePosts from './favoritePosts'
+  import modal from './modal'
 
   export default {
     data() {
@@ -91,8 +94,11 @@
           console.log(error);
         })
       },
+      openModal: function () {
+        this.$refs.modal.open();
+      }
     },
-    components: { myPosts, favoritePosts}
+    components: { myPosts, favoritePosts, modal }
   }
 </script>
 
@@ -104,7 +110,7 @@
   }
   .mybutton{
     display: block;
-    max-width: 150ZZpx;
+    max-width: 150px;
     padding: 3px 5px;
     border: 1px solid #dbdbdb;
     border-radius: 5px;
@@ -155,7 +161,6 @@
   #edit-profile{
     width: 100%;
   }
-
   #post-wrapper{
     background-color: #fafafa;
     border-top: 1px solid gray;
