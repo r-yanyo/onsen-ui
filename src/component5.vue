@@ -110,7 +110,7 @@
   }
   .mybutton{
     display: block;
-    max-width: 150px;
+    max-width: 200px;
     padding: 3px 5px;
     border: 1px solid #dbdbdb;
     border-radius: 5px;

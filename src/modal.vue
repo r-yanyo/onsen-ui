@@ -2,8 +2,8 @@
 	<div v-if="show" class="modal-wrapper">
     <div class="modal-back" v-on:click="this.close"></div>
     <div class="modal-window">
+      <div class="modal-title item-block">フォロー</div>
       <ul>
-        <li><div class="modal-title item-block">フォロー</div></li>
         <li v-for="user in list">
           <div class="item-block">
             {{user.name}}
@@ -54,7 +54,7 @@
     width: 80%;
     max-width: 500px;
     height: 80%;
-    margin: 80px auto;
+    margin: 60px auto;
     background-color: #fafafa;
     overflow-y: scroll;
   }
