@@ -16,12 +16,12 @@
             <!-- </v-ons-carousel-item> -->
         </v-ons-carousel>
         <div class="content">
-        <div>
-          <FavoriteHeartIcon :post_id="post.id"></FavoriteHeartIcon>
-          <a href="#"><v-ons-icon icon="fa-share" class="myicon"></v-ons-icon></a>
-          <p>いいね！ 500件</p>
-        </div>
-            <p>{{post.text}}</p>
+          <div>
+            <FavoriteHeartIcon :post_id="post.id"></FavoriteHeartIcon>
+            <a href="#"><v-ons-icon icon="fa-share" class="myicon"></v-ons-icon></a>
+            <p>いいね！ 500件</p>
+          </div>
+          <p>{{post.text}}</p>
         </div>
       </v-ons-card>
     </div>

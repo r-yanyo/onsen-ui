@@ -1,8 +1,8 @@
 <template>
   <div class="wrapper">
       <div class="heart-container">
-        <input type="checkbox" id="heart" v-bind:checked="isFavorite" @click="toggleFavorite">
-        <label for="heart"><ons-icon icon="fa-heart" size="23px" fixed-width="false"></ons-icon></label>
+        <input type="checkbox" class="heart" v-bind:checked="isFavorite">
+        <label for="heart"><ons-icon icon="fa-heart" size="23px" fixed-width="false" @click="toggleFavorite"></ons-icon></label>
       </div>
   </div>
 </template>
@@ -35,18 +35,17 @@
         })
       },
       toggleFavorite: function(){
-        //thisが共通になってしまっている
         if(this.isFavorite){
           axios.post(`${BASE_URL}/api/users/unfavorite/${this.$props.post_id}`)
           .then( res => {
-
+            this.checkFavorite();
           }, error => {
             console.log(error);
           })
         }else{
           axios.post(`${BASE_URL}/api/users/favorite/${this.$props.post_id}`)
           .then( res => {
-
+            this.checkFavorite();
           }, error => {
             console.log(error);
           })
@@ -65,20 +64,21 @@
     padding: 5px 10px;
   }
 
-  #heart {
+  .heart {
     display: none;
   }
 
-  #heart+label ons-icon {
+  .heart+label ons-icon {
     color: gray;
+    cursor: pointer;
   }
 
-  #heart:checked+label ons-icon {
+  .heart:checked+label ons-icon {
     color: pink;
     animation: bound 1s linear;
   }
 
-  #heart:active+label ons-icon {
+  .heart:active+label ons-icon {
     transform: scale(0.8, 0.8);
   }
 
