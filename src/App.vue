@@ -16,11 +16,14 @@
 </template>
 
 <script>
+import auth from './auth.js'
 import component1 from './component1'
 import component2 from './component2'
 import component3 from './component3'
 import component4 from './component4'
 import component5 from './component5'
+import component6 from './component6'
+import component7 from './component7'
 
 export default {
   name: 'app',
@@ -40,18 +43,18 @@ export default {
           icon: 'fa-plus-square',
           page: component3,
         },
-        {
-          icon: 'fa-heart',
-          page: component4,
-        },
+        // {
+        //   icon: 'fa-heart',
+        //   page: component4,
+        // },
         {
           icon: 'fa-user',
-          page: component5,
+          page: auth.isLoggedIn() ? component7 : component6,
         },
       ]
     }
   },
-  components: { component1, component2, component3, component4, component5 },
+  components: { component1, component2, component3, component4, component7, component6 },
 }
 </script>
 
@@ -65,8 +68,6 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
 }
 
 h1, h2 {

@@ -10,19 +10,22 @@
             <div id="user-numbers">
               <div id='post-n'>
                 <a href='#'>投稿</a><br>
-                <b>30</b>
+                <b>{{posts.length}}</b>
               </div>
               <div id='follow-n'>
-                <a href='#' v-on:click="this.openModal" id='follow'>フォロー</a><br>
+                <a href='#' v-on:click="openModal('follow')" id='follow'>フォロー</a><br>
                 <b>{{following.length}}</b>
               </div>
               <div id='follower-n'>
-                <a href='#' v-on:click="this.openModal" id='follower'>フォロワー</a><br>
+                <a href='#' v-on:click="openModal('follower')" id='follower'>フォロワー</a><br>
                 <b>{{followers.length}}</b>
               </div>
             </div>
             <div id='edit-profile'>
               <a href="#" class="mybutton">プロフィールを編集</a>
+            </div>
+            <div>
+              <button class="mybutton" v-on:click="logout">ログアウト</button>
             </div>
           </div>
       </div>
@@ -31,21 +34,25 @@
         <a @click='toggle = false' v-bind:class='{selected:!toggle}' href='#' class="tab" >保存済み</a>
       </div>
       <div id="post-wrapper">
-        <myPosts v-if='toggle' myPosts></myPosts>
-        <favoritePosts v-if='!toggle' favoritePosts></favoritePosts>
+        <Posts v-if='toggle' :user_id="this.getUserId()" @openModal="(id) => openPostModal(id)"></Posts>
+        <FavoritePosts v-if='!toggle' :user_id="this.getUserId()" @openModal="(id) => openPostModal(id)"></FavoritePosts>
       </div>
     </div>
 
-    <modal v-bind:list="following" ref="modal"></modal>
-    <modal v-bind:list="followers" ref="modal"></modal>
+    <modal-user v-bind:list="following" ref="modal-follow" @push-page="(newPage, id) => pushPage(newPage, id)" ></modal-user>
+    <modal-user v-bind:list="followers" ref="modal-follower" @push-page="(newPage, id) => pushPage(newPage, id)" ></modal-user>
+    <modal-post v-bind:posts="posts" ref="modal-post"></modal-post>
   </v-ons-page>
 </template>
 
 <script>
+  import router from './router.js'
+  import auth from './auth.js'
   import axios from 'axios'
-  import myPosts from './myPosts'
-  import favoritePosts from './favoritePosts'
-  import modal from './modal'
+  import Posts from './Posts'
+  import FavoritePosts from './favoritePosts'
+
+  const BASE_URL = "http://localhost:3000"
 
   export default {
     data() {
@@ -55,14 +62,15 @@
         followers: [],
         toggle: true,
         tabIndex: 0,
+        posts: [],
         tabs: [
         {
           label: '投稿',
-          page: myPosts,
+          page: Posts,
         },
         {
           label: '保存済み',
-          page: favoritePosts,
+          page: Posts,
         }
         ]
       }
@@ -71,34 +79,62 @@
       this.fetchUser();
       this.fetchFollowing();
       this.fetchFollowers();
+      this.fetchPosts();
     },
     methods: {
+      isLoggedIn: function(){
+        return auth.isLoggedIn();
+      },
+      getUserId: function(){
+        return auth.getUserId();
+      },
+      logout: function(){
+        auth.logout();
+      },
       fetchUser: function () {
-        axios.get('https://instagourmet.herokuapp.com/api/users/1').then( res => {
+        axios.get(`${BASE_URL}/api/users/${auth.getUserId()}`).then( res => {
           this.user = res.data;
         }, error => {
           console.log(error);
         })
       },
       fetchFollowing: function () {
-        axios.get('https://instagourmet.herokuapp.com/api/users/1/following').then( res => {
+        axios.get(`${BASE_URL}/api/users/${auth.getUserId()}/following`).then( res => {
           this.following = res.data;
         }, error => {
           console.log(error);
         })
       },
       fetchFollowers: function () {
-        axios.get('https://instagourmet.herokuapp.com/api/users/1/followers').then( res => {
+        axios.get(`${BASE_URL}/api/users/${auth.getUserId()}/followers`).then( res => {
           this.followers = res.data;
         }, error => {
           console.log(error);
         })
       },
-      openModal: function () {
-        this.$refs.modal.open();
+      fetchPosts: function () {
+        axios.get(`${BASE_URL}/api/users/${auth.getUserId()}/posts`).then( res => {
+          this.posts = res.data;
+        }, error => {
+          console.log(error);
+        })
+      },
+      openModal: function(kind) {
+        this.$refs[`modal-${kind}`].open();
+      },
+      openPostModal: function(id) {
+        this.$refs['modal-post'].open(id);
+      },
+      pushPage: function(newPage, id) {
+        this.$emit('push-page', {
+          extends: newPage,
+          onsNavigatorProps: {
+            user_id: id
+          }
+        });
       }
     },
-    components: { myPosts, favoritePosts, modal }
+    components: { Posts, FavoritePosts }
   }
 </script>
 
@@ -160,10 +196,6 @@
   }
   #edit-profile{
     width: 100%;
-  }
-  #post-wrapper{
-    background-color: #fafafa;
-    border-top: 1px solid gray;
   }
   #tabs{
     border-top: 1px solid #dbdbdb;

@@ -1,27 +1,27 @@
 <template>
   <v-ons-page>
     <div class="content-wrapper">
-      <v-ons-card class="cards"　v-for="i in 5" :key="i">
+      <v-ons-card class="cards"　v-for="(post, i) in this.posts" :key="i">
         <div class="title">
           美味しい夕食
         </div>
           <v-ons-carousel fullscreen swipeable auto-scroll overscrollable :index.sync="carouselIndexes[i]">
-            <v-ons-carousel-item v-for="(item,index) in items" :key="index">
-              <img class="carousel-images" v-bind:src="'/public/img/'+item">
+            <!-- <v-ons-carousel-item v-for="(item, index) in post.imagePath" :key="index"> -->
+              <img class="carousel-images" :src="post.imagePath">
                   <div :style="dots">
                     <span :index="dotIndex - 1" v-for="dotIndex in Object.keys(items).length" :key="dotIndex" style="cursor: pointer" @click="setCarousel(i,dotIndex)">
                       {{ carouselIndexes[i] === dotIndex - 1 ? '\u25CF' : '\u25CB' }}
                     </span>
                 </div>
-            </v-ons-carousel-item>
+            <!-- </v-ons-carousel-item> -->
         </v-ons-carousel>
         <div class="content">
         <div>
-          <a href="#"><v-ons-icon icon="fa-heart" class="myicon"></v-ons-icon></a>
+          <FavoriteHeartIcon :post_id="post.id"></FavoriteHeartIcon>
           <a href="#"><v-ons-icon icon="fa-share" class="myicon"></v-ons-icon></a>
           <p>いいね！ 500件</p>
         </div>
-            <p>説明文です。</p>
+            <p>{{post.text}}</p>
         </div>
       </v-ons-card>
     </div>
@@ -29,15 +29,25 @@
 </template>
 
 <script>
+  import axios from 'axios'
+  import auth from './auth.js'
+  import FavoriteHeartIcon from './FavoriteHeartIcon'
+
+  const BASE_URL = "http://localhost:3000"
+
   export default{
     data() {
       return {
-        carouselIndexes: [0,0,0,0,0],
+        following: [],
+        posts: [],
         items: [
-          "food1.jpg",
-          "food2.jpg",
-          "food3.jpg"
+          'food0.jpg',
+          'food1.jpg',
+          'food2.jpg',
+          'food3.jpg',
+          'food4.jpg',
         ],
+        carouselIndexes: [0,0,0,0,0],
         dots: {
           textAlign: 'center',
           fontSize: '3.0rem',
@@ -49,11 +59,35 @@
         }
       }
     },
+    mounted: function(){
+      this.fetchFollowing();
+    },
     methods: {
       setCarousel: function(i,dotIndex){
         this.$set(this.carouselIndexes,i,dotIndex - 1)
-      }
-    }
+      },
+      fetchPosts: function() {
+        this.following.forEach(user => {
+          axios.get(`${BASE_URL}/api/users/${user.id}/posts`).then( res => {
+            if(res.data.length != 0) this.posts.push(...res.data)
+            this.posts.forEach((val,i,array)=>{
+              array[i].imagePath = `/public/img/food${Math.round(array[i].id%5)}.jpg`
+            })
+          }, error => {
+            console.log(error);
+          })
+        })
+      },
+      fetchFollowing: function() {
+        axios.get(`${BASE_URL}/api/users/${auth.getUserId()}/following`).then( res => {
+          this.following = res.data;
+          this.fetchPosts();
+        }, error => {
+          console.log(error);
+        })
+      },
+    },
+    components: { FavoriteHeartIcon }
   }
 </script>
 

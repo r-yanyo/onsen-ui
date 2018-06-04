@@ -1,24 +1,61 @@
 <template>
-  <ul id='my-post' class='posts'>
-    <li v-for="i in 7">
-      <a href='#' class='post'>
-        <img v-bind:src='"/public/img/food"+(8-i)+".jpg"' class="post-image">
-      </a>
-    </li>
-  </ul>
+  <div>
+    <ul id='my-post' class='posts'>
+      <li v-for="post in posts">
+        <a href='#' class='post' @click="openModal(post)">
+          <img v-bind:src='post.imagePath' class="post-image">
+        </a>
+      </li>
+    </ul>
+    <modal-post ref="modal-post"></modal-post>
+  </div>
 </template>
+
+<script>
+  import auth from './auth.js'
+  import axios from 'axios'
+
+  const BASE_URL = "http://localhost:3000"
+
+  export default {
+    data() {
+      return {
+        posts: []
+      }
+    },
+    mounted: function() {
+      this.fetchPosts();
+    },
+    props: ['user_id', 'post_kind'],
+    methods: {
+      fetchPosts: function() {
+        axios.get(`${BASE_URL}/api/users/${this.user_id}/favorite_posts`).then( res => {
+          this.posts = res.data;
+          this.posts.forEach((val,i,array)=>{
+            array[i].imagePath = `/public/img/food${Math.round(array[i].id%5)}.jpg`
+          })
+        }, error => {
+          console.log(error);
+        })
+      },
+      openModal: function(post) {
+        this.$emit('openModal', post);
+      }
+    },
+
+  }
+</script>
 
 <style scoped>
   .posts{
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start;
-    align-items: flex-start;
-    align-self: flex-start;
+    justify-content: start;
+    align-items: start;
+    align-self: start;
   }
   .posts li{
     width: 33%;
-    margin-right: auto;
     margin-bottom: auto;
   }
   .post{
