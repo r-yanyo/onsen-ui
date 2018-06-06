@@ -92,28 +92,28 @@
         auth.logout();
       },
       fetchUser: function () {
-        axios.get(`${BASE_URL}/api/users/${auth.getUserId()}`).then( res => {
+        axios.get(`${BASE_URL}/users/${auth.getUserId()}`).then( res => {
           this.user = res.data;
         }, error => {
           console.log(error);
         })
       },
       fetchFollowing: function () {
-        axios.get(`${BASE_URL}/api/users/${auth.getUserId()}/following`).then( res => {
+        axios.get(`${BASE_URL}/users/${auth.getUserId()}/following`).then( res => {
           this.following = res.data;
         }, error => {
           console.log(error);
         })
       },
       fetchFollowers: function () {
-        axios.get(`${BASE_URL}/api/users/${auth.getUserId()}/followers`).then( res => {
+        axios.get(`${BASE_URL}/users/${auth.getUserId()}/followers`).then( res => {
           this.followers = res.data;
         }, error => {
           console.log(error);
         })
       },
       fetchPosts: function () {
-        axios.get(`${BASE_URL}/api/users/${auth.getUserId()}/posts`).then( res => {
+        axios.get(`${BASE_URL}/users/${auth.getUserId()}/posts`).then( res => {
           this.posts = res.data;
         }, error => {
           console.log(error);

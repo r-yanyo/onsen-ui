@@ -27,7 +27,7 @@
     },
     methods: {
       checkFavorite: function() {
-        axios.get(`${BASE_URL}/api/users/isfavorite/${this.$props.post_id}`
+        axios.get(`${BASE_URL}/users/isfavorite/${this.$props.post_id}`
         ).then( res => {
           this.isFavorite = res.data.isFavorite;
         }, error => {
@@ -36,14 +36,14 @@
       },
       toggleFavorite: function(){
         if(this.isFavorite){
-          axios.post(`${BASE_URL}/api/users/unfavorite/${this.$props.post_id}`)
+          axios.post(`${BASE_URL}/users/unfavorite/${this.$props.post_id}`)
           .then( res => {
             this.checkFavorite();
           }, error => {
             console.log(error);
           })
         }else{
-          axios.post(`${BASE_URL}/api/users/favorite/${this.$props.post_id}`)
+          axios.post(`${BASE_URL}/users/favorite/${this.$props.post_id}`)
           .then( res => {
             this.checkFavorite();
           }, error => {

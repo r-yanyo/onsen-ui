@@ -58,7 +58,7 @@
         data.append('post[text]', this.text);
         data.append('post[photo]', this.files[0]);
 
-        axios.post(`${BASE_URL}/api/users/${this.user_id}/posts`, data,{
+        axios.post(`${BASE_URL}/users/${this.user_id}/posts`, data,{
           headers: {'Content-Type': ''}
         })
         .then( res => {

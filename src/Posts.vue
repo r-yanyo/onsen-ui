@@ -29,7 +29,7 @@
     props: ['user_id', 'post_kind'],
     methods: {
       fetchPosts: function() {
-        axios.get(`${BASE_URL}/api/users/${this.user_id}/posts`).then( res => {
+        axios.get(`${BASE_URL}/users/${this.user_id}/posts`).then( res => {
           this.posts = res.data;
           this.posts.forEach((val,i,array)=>{
               array[i].imagePath = `${BASE_URL}${array[i].photo.url}`

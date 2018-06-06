@@ -68,7 +68,7 @@
       },
       fetchPosts: function() {
         this.following.forEach(user => {
-          axios.get(`${BASE_URL}/api/users/${user.id}/posts`).then( res => {
+          axios.get(`${BASE_URL}/users/${user.id}/posts`).then( res => {
             if(res.data.length != 0) this.posts.push(...res.data)
             this.posts.forEach((val,i,array)=>{
               array[i].imagePath = `${BASE_URL}${array[i].photo.url}`
@@ -79,7 +79,7 @@
         })
       },
       fetchFollowing: function() {
-        axios.get(`${BASE_URL}/api/users/${auth.getUserId()}/following`).then( res => {
+        axios.get(`${BASE_URL}/users/${auth.getUserId()}/following`).then( res => {
           this.following = res.data;
           this.fetchPosts();
         }, error => {
