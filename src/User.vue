@@ -51,7 +51,7 @@
   import Posts from './Posts'
   import FavoritePosts from './favoritePosts'
 
-  const BASE_URL = process.env.NODE_ENV === 'production' ? "https://instagourmet.herokuapp.com/" : "http://localhost:3000"
+  const BASE_URL = process.env.NODE_ENV === 'production' ? "https://instagourmet.herokuapp.com" : "http://localhost:3000"
 
   axios.defaults.headers['Authorization'] = auth.getAccessToken();
 
