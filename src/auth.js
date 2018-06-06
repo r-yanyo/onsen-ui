@@ -2,7 +2,7 @@ import VueRouter from 'vue-router';
 import axios from 'axios';
 import router from './router.js';
 
-const BASE_URL = 'http://localhost:3000/api';
+const BASE_URL = process.env.NODE_ENV === 'production' ? "https://instagourmet.herokuapp.com/" : "http://localhost:3000"
 
 export default {
   login: function(email,password){
@@ -10,7 +10,6 @@ export default {
       email,
       password
     }).then((res) => {
-      console.log(res);
       this.setAccessToken(res.data.auth_token);
       router.push('/');
     }).catch((err) => {

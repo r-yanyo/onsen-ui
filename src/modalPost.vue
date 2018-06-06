@@ -15,7 +15,7 @@
   import auth from './auth.js';
   import FavoriteHeartIcon from './FavoriteHeartIcon';
 
-  const BASE_URL = "http://localhost:3000";
+  const BASE_URL = process.env.NODE_ENV === 'production' ? "https://instagourmet.herokuapp.com/" : "http://localhost:3000"
 
   axios.defaults.headers['Authorization'] = auth.getAccessToken();
 

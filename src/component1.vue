@@ -71,7 +71,7 @@
           axios.get(`${BASE_URL}/api/users/${user.id}/posts`).then( res => {
             if(res.data.length != 0) this.posts.push(...res.data)
             this.posts.forEach((val,i,array)=>{
-              array[i].imagePath = `/public/img/food${Math.round(array[i].id%5)}.jpg`
+              array[i].imagePath = `${BASE_URL}${array[i].photo.url}`
             })
           }, error => {
             console.log(error);

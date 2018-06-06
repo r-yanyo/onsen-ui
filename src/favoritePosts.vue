@@ -15,7 +15,7 @@
   import auth from './auth.js'
   import axios from 'axios'
 
-  const BASE_URL = "http://localhost:3000"
+  const BASE_URL = process.env.NODE_ENV === 'production' ? "https://instagourmet.herokuapp.com/" : "http://localhost:3000"
 
   export default {
     data() {
@@ -32,7 +32,7 @@
         axios.get(`${BASE_URL}/api/users/${this.user_id}/favorite_posts`).then( res => {
           this.posts = res.data;
           this.posts.forEach((val,i,array)=>{
-            array[i].imagePath = `/public/img/food${Math.round(array[i].id%5)}.jpg`
+              array[i].imagePath = `${BASE_URL}${array[i].photo.url}`
           })
         }, error => {
           console.log(error);
