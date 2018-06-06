@@ -5,7 +5,7 @@ import router from './router.js';
 const BASE_URL = process.env.NODE_ENV === 'production' ? "https://instagourmet.herokuapp.com/api" : "http://localhost:3000/api"
 
 export default {
-  login: function(email,password){
+  login: function(email,password) {
     axios.post(`${BASE_URL}/login`,{
       email,
       password
